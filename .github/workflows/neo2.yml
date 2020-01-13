@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 # 
 
-name: nanopi neo2旁路由系统自动编译工程
+name: nanopi neo2旁路由
 
 on:
   schedule:
@@ -164,8 +164,9 @@ jobs:
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ttyd=y
-          # CONFIG_PACKAGE_luci-app-v2ray-server=y
+          CONFIG_PACKAGE_luci-app-v2ray-server=y
           # CONFIG_PACKAGE_luci-app-verysync=y
           # CONFIG_PACKAGE_luci-app-webadmin=y
           # CONFIG_PACKAGE_luci-app-wireguard=y
@@ -214,7 +215,7 @@ jobs:
 
       - name: Compile firmware
         run: |
-          make -j$(nproc) -s || make -j1 V=s
+          make -j$(($(nproc) + 1)) -s || make -j1 V=s
           echo "======================="
           echo "Space usage:"
           echo "======================="
