@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 # 
 
-name: nanopi r1s路由系统自动编译工程
+name: nanopi r1s自动编译
 
 on:
   schedule:
@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          ref: master
+          ref: r1s
 
       - name: Space cleanup
         env:
