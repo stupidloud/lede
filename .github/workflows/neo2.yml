@@ -193,6 +193,34 @@ jobs:
           CONFIG_PACKAGE_collectd-mod-ping=y
           CONFIG_PACKAGE_collectd-mod-thermal=y
           CONFIG_PACKAGE_collectd-mod-cpufreq=y
+          
+          CONFIG_GNUTLS_ALPN=y
+          CONFIG_GNUTLS_ANON=y
+          CONFIG_GNUTLS_DTLS_SRTP=y
+          CONFIG_GNUTLS_HEARTBEAT=y
+          CONFIG_GNUTLS_OCSP=y
+          CONFIG_GNUTLS_PSK=y
+          CONFIG_OPENSSL_ENGINE_BUILTIN=y
+          CONFIG_OPENSSL_ENGINE_BUILTIN_AFALG=y
+          CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+          CONFIG_OPENSSL_WITH_ARIA=y
+          CONFIG_OPENSSL_WITH_BLAKE2=y
+          CONFIG_OPENSSL_WITH_CAMELLIA=y
+          CONFIG_OPENSSL_WITH_COMPRESSION=y
+          CONFIG_OPENSSL_WITH_DTLS=y
+          CONFIG_OPENSSL_WITH_EC2M=y
+          CONFIG_OPENSSL_WITH_IDEA=y
+          CONFIG_OPENSSL_WITH_MDC2=y
+          CONFIG_OPENSSL_WITH_NPN=y
+          CONFIG_OPENSSL_WITH_SEED=y
+          CONFIG_OPENSSL_WITH_SM234=y
+          CONFIG_OPENSSL_WITH_WHIRLPOOL=y
+          CONFIG_PACKAGE_kmod-crypto-user=y
+          CONFIG_PACKAGE_libgmp=y
+          CONFIG_PACKAGE_libgnutls=y
+          CONFIG_PACKAGE_libmbedtls=y
+          CONFIG_PACKAGE_libnettle=y
+          # CONFIG_PACKAGE_libopenssl-devcrypto is not set          
           EOF
 
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
