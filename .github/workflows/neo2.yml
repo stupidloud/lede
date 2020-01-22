@@ -194,6 +194,7 @@ jobs:
           CONFIG_PACKAGE_collectd-mod-thermal=y
           CONFIG_PACKAGE_collectd-mod-cpufreq=y
           
+          CONFIG_PACKAGE_openssl-util=y
           CONFIG_GNUTLS_ALPN=y
           CONFIG_GNUTLS_ANON=y
           CONFIG_GNUTLS_DTLS_SRTP=y
