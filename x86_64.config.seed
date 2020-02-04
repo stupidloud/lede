@@ -4,56 +4,55 @@ CONFIG_TARGET_x86_64_Generic=y
 CONFIG_PACKAGE_grub2-efi=y
 CONFIG_EFI_IMAGES=y
 CONFIG_TARGET_IMAGES_GZIP=y
-CONFIG_TARGET_KERNEL_PARTSIZE=16
-CONFIG_TARGET_ROOTFS_PARTSIZE=300
-# CONFIG_GRUB_CONSOLE is not set
-CONFIG_PACKAGE_ipv6helper=y
-CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
-CONFIG_PACKAGE_dnsmasq_full_auth=y
-CONFIG_PACKAGE_dnsmasq_full_conntrack=y
-CONFIG_PACKAGE_dnsmasq_full_dnssec=y
-CONFIG_PACKAGE_luci-app-ttyd=y
-CONFIG_PACKAGE_luci-app-vnstat=y
-CONFIG_PACKAGE_luci-app-statistics=y
-CONFIG_PACKAGE_luci-app-unblockmusic=y
-CONFIG_PACKAGE_luci-app-wrtbwmon=y
-CONFIG_PACKAGE_luci-app-netdata=y
-CONFIG_PACKAGE_luci-app-webadmin=y
-CONFIG_PACKAGE_luci-app-ssr-plus=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
-CONFIG_PACKAGE_luci-theme-argon=y
-CONFIG_PACKAGE_luci-theme-netgear=y
-CONFIG_PACKAGE_luci-theme-rosy=y
-CONFIG_PACKAGE_curl=y
-CONFIG_PACKAGE_htop=y
-CONFIG_PACKAGE_nano=y
-CONFIG_PACKAGE_screen=y
-CONFIG_PACKAGE_tree=y
-CONFIG_PACKAGE_vim-fuller=y
-CONFIG_PACKAGE_wget=y
-CONFIG_PACKAGE_collectd-mod-ping=y
-CONFIG_PACKAGE_collectd-mod-thermal=y
-CONFIG_PACKAGE_collectd-mod-cpufreq=y
-CONFIG_PACKAGE_openssl-util=y
+# CONFIG_TARGET_IMAGES_PAD is not set
+# CONFIG_VMDK_IMAGES is not set
+CONFIG_LIBCURL_COOKIES=y
+CONFIG_LIBCURL_FILE=y
+CONFIG_LIBCURL_FTP=y
+CONFIG_LIBCURL_HTTP=y
+CONFIG_LIBCURL_NO_SMB="!"
+CONFIG_LIBCURL_OPENSSL=y
+CONFIG_LIBCURL_PROXY=y
+CONFIG_OPENSSL_ENGINE_BUILTIN=y
 CONFIG_OPENSSL_WITH_DTLS=y
 CONFIG_OPENSSL_WITH_EC2M=y
 CONFIG_OPENSSL_WITH_NPN=y
-CONFIG_PACKAGE_kmod-crypto-ctr=y
-CONFIG_PACKAGE_kmod-crypto-gcm=y
-CONFIG_PACKAGE_kmod-crypto-gf128=y
-CONFIG_PACKAGE_kmod-crypto-ghash=y
-CONFIG_PACKAGE_kmod-crypto-seqiv=y
-CONFIG_PACKAGE_kmod-crypto-user=y
-CONFIG_PACKAGE_libgmp=y
-CONFIG_PACKAGE_libgnutls=y
-CONFIG_PACKAGE_libmbedtls=y
-CONFIG_PACKAGE_libnettle=y
-CONFIG_PACKAGE_kmod-fs-ntfs=y
-# CONFIG_FEED_rosy is not set
-# CONFIG_TARGET_IMAGES_PAD is not set
-# CONFIG_VMDK_IMAGES is not set
+CONFIG_PACKAGE_ca-bundle=y
+CONFIG_PACKAGE_collectd=y
+CONFIG_PACKAGE_collectd-mod-cpu=y
+CONFIG_PACKAGE_collectd-mod-cpufreq=y
+CONFIG_PACKAGE_collectd-mod-interface=y
+CONFIG_PACKAGE_collectd-mod-iwinfo=y
+CONFIG_PACKAGE_collectd-mod-load=y
+CONFIG_PACKAGE_collectd-mod-memory=y
+CONFIG_PACKAGE_collectd-mod-network=y
+CONFIG_PACKAGE_collectd-mod-ping=y
+CONFIG_PACKAGE_collectd-mod-rrdtool=y
+CONFIG_PACKAGE_collectd-mod-thermal=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+# CONFIG_PACKAGE_kmod-cryptodev is not set
+CONFIG_PACKAGE_libcurl=y
+CONFIG_PACKAGE_libgd=y
+CONFIG_PACKAGE_libjpeg=y
+CONFIG_PACKAGE_libltdl=y
+# CONFIG_PACKAGE_libopenssl-devcrypto is not set
+CONFIG_PACKAGE_liboping=y
+CONFIG_PACKAGE_libpng=y
+CONFIG_PACKAGE_librrd1=y
+CONFIG_PACKAGE_luci-app-netdata=y
+CONFIG_PACKAGE_luci-app-statistics=y
+CONFIG_PACKAGE_luci-app-vnstat=y
+CONFIG_PACKAGE_luci-i18n-netdata-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-statistics-zh-cn=y
+CONFIG_PACKAGE_luci-i18n-vnstat-zh-cn=y
+CONFIG_PACKAGE_luci-theme-argon=y
+CONFIG_PACKAGE_luci-theme-rosy=y
+CONFIG_PACKAGE_nano=y
+CONFIG_PACKAGE_netdata=y
+CONFIG_PACKAGE_rrdtool1=y
+CONFIG_PACKAGE_vim-fuller=y
+CONFIG_PACKAGE_vnstat=y
+CONFIG_PACKAGE_vnstati=y
+# CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
+# CONFIG_PACKAGE_kmod-cryptodev is not set
