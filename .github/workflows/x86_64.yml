@@ -5,6 +5,7 @@ on:
     - cron: 0 16 * * *
   push:
     paths:
+      - 'x86_64.config.seed'
       - '.github/workflows/x86_64.yml'
   release:
     types: [published]
