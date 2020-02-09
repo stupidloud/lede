@@ -1,49 +1,34 @@
-From ceca46d683970cc002c8842f350410bda3e4125b Mon Sep 17 00:00:00 2001
-From: jerrykuku <jerrykuku@qq.com>
-Date: Sun, 22 Dec 2019 15:09:12 +0800
-Subject: [PATCH] add r1s h5
-
----
- arch/arm/dts/Makefile                 |  1 +
- arch/arm/dts/sun50i-h5-nanopi-r1s.dts | 86 +++++++++++++++++++++++++++
- configs/nanopi_r1s_defconfig          | 14 +++++
- 3 files changed, 101 insertions(+)
- create mode 100644 arch/arm/dts/sun50i-h5-nanopi-r1s.dts
- create mode 100644 configs/nanopi_r1s_defconfig
-
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 5b6a43b..7c83422 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -372,6 +372,7 @@ dtb-$(CONFIG_MACH_SUN8I_V3S) += \
- dtb-$(CONFIG_MACH_SUN50I_H5) += \
+Index: u-boot-2019.01/arch/arm/dts/Makefile
+===================================================================
+--- u-boot-2019.01.orig/arch/arm/dts/Makefile
++++ u-boot-2019.01/arch/arm/dts/Makefile
+@@ -399,6 +399,7 @@ dtb-$(CONFIG_MACH_SUN50I_H5) += \
+ 	sun50i-h5-libretech-all-h3-cc.dtb \
  	sun50i-h5-nanopi-neo2.dtb \
  	sun50i-h5-nanopi-neo-plus2.dtb \
 +	sun50i-h5-nanopi-r1s.dtb \
  	sun50i-h5-orangepi-zero-plus.dtb \
  	sun50i-h5-orangepi-pc2.dtb \
  	sun50i-h5-orangepi-prime.dtb \
-diff --git a/arch/arm/dts/sun50i-h5-nanopi-r1s.dts b/arch/arm/dts/sun50i-h5-nanopi-r1s.dts
-new file mode 100644
-index 0000000..4992ef5
+Index: u-boot-2019.01/arch/arm/dts/sun50i-h5-nanopi-r1s.dts
+===================================================================
 --- /dev/null
-+++ b/arch/arm/dts/sun50i-h5-nanopi-r1s.dts
-@@ -0,0 +1,86 @@
++++ u-boot-2019.01/arch/arm/dts/sun50i-h5-nanopi-r1s.dts
+@@ -0,0 +1,159 @@
 +/*
 + * Copyright (C) 2017 Icenowy Zheng <icenowy@aosc.io>
-+ * Copyright (C) 2017 Jagan Teki <jteki@openedev.com>
 + *
 + * This file is dual-licensed: you can use it either under the terms
 + * of the GPL or the X11 license, at your option. Note that this dual
 + * licensing only applies to this file, and not this project as a
 + * whole.
 + *
-+ *  a) This library is free software; you can redistribute it and/or
++ *  a) This file is free software; you can redistribute it and/or
 + *     modify it under the terms of the GNU General Public License as
 + *     published by the Free Software Foundation; either version 2 of the
 + *     License, or (at your option) any later version.
 + *
-+ *     This library is distributed in the hope that it will be useful,
++ *     This file is distributed in the hope that it will be useful,
 + *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 + *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + *     GNU General Public License for more details.
@@ -73,21 +58,46 @@ index 0000000..4992ef5
 + */
 +
 +/dts-v1/;
-+
 +#include "sun50i-h5.dtsi"
 +
 +#include <dt-bindings/gpio/gpio.h>
 +
 +/ {
-+	model = "FriendlyElec NanoPi-R1S-H5";
-+	compatible = "friendlyelec,nanopi-r1s-h5", "allwinner,sun50i-h5";
++	model = "FriendlyARM NanoPi R1S H5";
++	compatible = "friendlyarm,nanopi-r1s-h5", "allwinner,sun50i-h5";
 +
 +	aliases {
++		ethernet0 = &emac;
 +		serial0 = &uart0;
 +	};
 +
 +	chosen {
 +		stdout-path = "serial0:115200n8";
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		pwr {
++			label = "nanopi:green:pwr";
++			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++
++		status {
++			label = "nanopi:blue:status";
++			gpios = <&pio 0 10 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	reg_gmac_3v3: gmac-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "gmac-3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		startup-delay-us = <100000>;
++		enable-active-high;
++		gpio = <&pio 3 6 GPIO_ACTIVE_HIGH>;
 +	};
 +
 +	reg_vcc3v3: vcc3v3 {
@@ -96,17 +106,54 @@ index 0000000..4992ef5
 +		regulator-min-microvolt = <3300000>;
 +		regulator-max-microvolt = <3300000>;
 +	};
++
++	reg_usb0_vbus: usb0-vbus {
++		compatible = "regulator-fixed";
++		regulator-name = "usb0-vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		enable-active-high;
++		gpio = <&r_pio 0 2 GPIO_ACTIVE_HIGH>; /* PL2 */
++		status = "okay";
++	};
++};
++
++&ehci0 {
++	status = "okay";
++};
++
++&ehci3 {
++	status = "okay";
++};
++
++&emac {
++	pinctrl-names = "default";
++	pinctrl-0 = <&emac_rgmii_pins>;
++	phy-supply = <&reg_gmac_3v3>;
++	phy-handle = <&ext_rgmii_phy>;
++	phy-mode = "rgmii";
++	status = "okay";
++};
++
++&external_mdio {
++	ext_rgmii_phy: ethernet-phy@7 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <7>;
++	};
 +};
 +
 +&mmc0 {
-+	compatible = "allwinner,sun50i-h5-mmc",
-+		     "allwinner,sun50i-a64-mmc",
-+		     "allwinner,sun5i-a13-mmc";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
 +	vmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <4>;
 +	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
++	status = "okay";
++};
++
++&ohci0 {
++	status = "okay";
++};
++
++&ohci3 {
 +	status = "okay";
 +};
 +
@@ -115,26 +162,35 @@ index 0000000..4992ef5
 +	pinctrl-0 = <&uart0_pins_a>;
 +	status = "okay";
 +};
-diff --git a/configs/nanopi_r1s_defconfig b/configs/nanopi_r1s_defconfig
-new file mode 100644
-index 0000000..3f6ff4d
++
++&usb_otg {
++	dr_mode = "otg";
++	status = "okay";
++};
++
++&usbphy {
++	/* USB Type-A port's VBUS is always on */
++	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
++	usb0_vbus-supply = <&reg_usb0_vbus>;
++	status = "okay";
++};
+Index: u-boot-2019.01/configs/nanopi_r1s_defconfig
+===================================================================
 --- /dev/null
-+++ b/configs/nanopi_r1s_defconfig
-@@ -0,0 +1,14 @@
++++ u-boot-2019.01/configs/nanopi_r1s_defconfig
+@@ -0,0 +1,15 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_SUNXI=y
 +CONFIG_SPL=y
 +CONFIG_MACH_SUN50I_H5=y
 +CONFIG_DRAM_CLK=672
 +CONFIG_DRAM_ZQ=3881977
-+CONFIG_DEFAULT_DEVICE_TREE="sun50i-h5-nanopi-r1s"
++CONFIG_NR_DRAM_BANKS=1
 +# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
 +# CONFIG_CMD_FLASH is not set
 +# CONFIG_SPL_DOS_PARTITION is not set
 +# CONFIG_SPL_EFI_PARTITION is not set
++CONFIG_DEFAULT_DEVICE_TREE="sun50i-h5-nanopi-r1s"
 +CONFIG_SUN8I_EMAC=y
 +CONFIG_USB_EHCI_HCD=y
 +CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
--- 
-2.21.0.windows.1
-
