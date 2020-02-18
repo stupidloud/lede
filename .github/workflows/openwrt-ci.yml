@@ -131,6 +131,7 @@ jobs:
 
           # 常用软件包:
           cat >> .config <<EOF
+          CONFIG_PACKAGE_bash=y
           CONFIG_PACKAGE_curl=y
           CONFIG_PACKAGE_htop=y
           CONFIG_PACKAGE_nano=y
