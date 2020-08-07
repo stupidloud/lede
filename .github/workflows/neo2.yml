@@ -1,11 +1,8 @@
 name: nanopi neo2旁路由
 
 on:
-  schedule:
-    - cron: 0 9 * * *
   push:
-    paths: 
-      - '.github/workflows/neo2.yml_'
+    branches: [ master ] 
 
 jobs:
 

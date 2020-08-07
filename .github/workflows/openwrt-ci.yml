@@ -8,8 +8,8 @@
 name: X86自动编译
 
 on:
-  schedule:
-    - cron: 0 06 * * *
+  push:
+    branches: [ master ]
   release:
     types: [published]
 

@@ -1,14 +1,10 @@
 name: rpi4b自动编译
 
 on:
-  schedule:
-    - cron: 0 16 * * *
   push:
-    paths:
-      - 'rpi4b.config.seed'
-      - '.github/workflows/rpi4b.yml'
+    branches: [ master ]
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
 
