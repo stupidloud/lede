@@ -28,11 +28,12 @@ jobs:
         ref: master
         fetch-depth: 0
         lfs: true
+        token: ${{ secrets.SEC_TOKEN }}
 
     - name: Set git identity
       run : |
-        git config --global user.email "klever1988@protonmail.com"
-        git config --global user.name "klever1988"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
     - name: Load upstream commits
       run:  |
