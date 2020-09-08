@@ -155,6 +155,9 @@ jobs:
           # CONFIG_OPENSSL_ENGINE_BUILTIN_AFALG is not set
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_FEED_rosy is not set
+          
+          CONFIG_TARGET_KERNEL_PARTSIZE=32
+          CONFIG_TARGET_ROOTFS_PARTSIZE=320
           EOF
 
           sed -i 's/^[ \t]*//g' ./.config
