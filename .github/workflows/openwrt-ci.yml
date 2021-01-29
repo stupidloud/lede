@@ -105,8 +105,10 @@ jobs:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-app-cifsd=y
           CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-sfe=y
           CONFIG_PACKAGE_luci-app-statistics=y
           CONFIG_PACKAGE_luci-app-vnstat=y
+          CONFIG_PACKAGE_luci-app-shadowsocks-libev=y
           # CONFIG_PACKAGE_luci-app-amule is not set
           # CONFIG_PACKAGE_luci-app-qbittorrent is not set
           # CONFIG_PACKAGE_luci-app-accesscontrol is not set
