@@ -37,7 +37,6 @@ jobs:
 
       - name: Custom configure file
         run: |
-          git apply enable_autocore.diff
           mv r2s.config.seed .config
           make defconfig
 
