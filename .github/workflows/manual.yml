@@ -28,10 +28,12 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@master
-        with:
-          ref: master
-          fetch-depth: 0
+        #uses: actions/checkout@master
+        #with:
+        #  ref: master
+        #  fetch-depth: 0
+        run: |
+          git clone --single-branch https://github.com/klever1988/lede
 
       - name: Space cleanup
         env:
@@ -39,7 +41,7 @@ jobs:
         run: |
           docker rmi `docker images -q`
           sudo -E apt-get update
-          sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf swig
+          sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
@@ -47,7 +49,8 @@ jobs:
 
       - name: Update feeds
         run: |
-          sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
+          cd lede
+          sed -i 's/#src-git helloworld/src-git helloworld/g' feeds.conf.default
           #git clone https://github.com/rosywrt/luci
           #mv luci/themes/luci-theme-rosy package/lean/
           #rm -rf luci/
@@ -59,21 +62,27 @@ jobs:
 
       - name: Custom configure file
         run: |
-          rm -f ./.config*
+          cd lede
+          rm -f .config*
 
           mv ${{ github.event.inputs.device }}.config.seed .config
 
-          sed -i 's/^[ \t]*//g' ./.config
-          make defconfig
+          sed -i 's/^[ \t]*//g' .config
+          #echo -e '\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n# CONFIG_UnblockNeteaseMusic_Go is not set' >> .config
+          make defconfig && cat .config
 
       - name: Make download
         run: |
+          cd lede
           make download -j8
           find dl -size -1024c -exec rm -f {} \;
+          wget "https://github.com/klever1988/lede/releases/download/ccache/ccache.tar.gz" || true
+          tar -zvxf ccache.tar.gz || true
 
       - name: Compile firmware
         run: |
-          make -j$(($(nproc) + 1)) -s || make -j1 V=s
+          cd lede
+          #make -j$(($(nproc) + 1)) -s
           echo "======================="
           echo "Space usage:"
           echo "======================="
@@ -85,6 +94,7 @@ jobs:
 
       - name: Prepare artifact
         run: |
+          cd lede
           mkdir -p ./artifact/firmware
           mkdir -p ./artifact/package
           mkdir -p ./artifact/buildinfo
@@ -92,6 +102,9 @@ jobs:
           cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+          #tar -zvcf ccache.tar.gz staging_dir/host/ccache staging_dir/target-x86_64_musl/ccache
+          cd ..
+          tar -cf - lede | zstdmt - | split -d -b 2000m - lede.zstd.
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
@@ -112,10 +125,12 @@ jobs:
           path: ./bin/targets/
   
 
-      - name: Upload release asset
+      - name: Upload cache asset
+        if: always()
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./artifact/firmware/*
-          tag: ${{ github.ref }}
+          file: ./lede.zstd.*
+          tag: cache
           file_glob: true
+          overwrite: true
