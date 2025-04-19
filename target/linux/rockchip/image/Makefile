@@ -16,7 +16,7 @@ define Build/boot-common
 	rm -fR $@.boot
 	mkdir -p $@.boot
 
-	$(CP) $(DTS_DIR)/$(DEVICE_DTS).dtb $@.boot/rockchip.dtb
+	$(CP) $(KDIR)/image-$(firstword $(notdir $(DEVICE_DTS))).dtb $@.boot/rockchip.dtb
 	$(CP) $(IMAGE_KERNEL) $@.boot/kernel.img
 endef
 
@@ -73,7 +73,7 @@ define Device/Default
   DEVICE_DTS = rockchip/$$(SOC)-$(lastword $(subst _, ,$(1)))
 endef
 
-ifdef CONFIG_LINUX_6_1
+ifndef CONFIG_LINUX_5_15
   DTS_CPPFLAGS += -DDTS_NO_LEGACY
 endif
 
