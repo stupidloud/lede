@@ -5,11 +5,13 @@
 #
 # Copyright (C) 2020 KFERMercer
 #
-name: OpenWrt-CI
+name: OpenWrt-R2S-CI
 
 on:
   schedule:
     - cron: 0 20 * * *
+  # 允许手动触发工作流
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,7 +20,7 @@ jobs:
 
   build_openwrt:
 
-    name: Build OpenWrt Firmware
+    name: Build OpenWrt R2S Firmware
 
     runs-on: ubuntu-22.04
 
@@ -61,8 +63,14 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Generate configuration file
-        run: make defconfig
+      - name: Generate configuration file for R2S
+        run: |
+          cat > .config <<EOF
+          CONFIG_TARGET_rockchip=y
+          CONFIG_TARGET_rockchip_armv8=y
+          CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y
+          EOF
+          make defconfig
 
       - name: Download packages
         run: make download -j16
@@ -90,17 +98,17 @@ jobs:
       - name: Upload buildinfo
         uses: actions/upload-artifact@v4
         with:
-          name: OpenWrt_buildinfo
+          name: OpenWrt_R2S_buildinfo
           path: ./artifact/buildinfo/
 
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
-          name: OpenWrt_package
+          name: OpenWrt_R2S_package
           path: ./artifact/package/
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
-          name: OpenWrt_firmware
+          name: OpenWrt_R2S_firmware
           path: ./bin/targets/
